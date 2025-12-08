@@ -5,86 +5,533 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles.css">
+    <meta name="description" content="Portfolio de Wellison Oliveira - Aluno Desenvolvedor Front End e Técnico em Informática">
+    <meta name="keywords" content="portfolio, aluno, desenvolvedor, frontend, HTML, CSS, JavaScript, React, Node">
+    <meta name="author" content="Wellison Oliveira">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./styles_manno.css">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;500&display=swap" rel="stylesheet">
-    <title>Wellison Oliveira</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <title>Wellison Oliveira | Portfolio</title>
 </head>
 
 <body>
-    <div class="caixa-principal" id="home">
-        <nav>
-            
-            <ul>
-                <li><a class="link-menu" href="#home"><h2 class="portfolio">Portfo<span>lio</span></h2></a></li>
-                <li><a class="link-menu" href="#sobre">About me</a></li>
-                <li><a class="link-menu" href="#projetos-id">Projects</a></li>
-                <li><a class="link-menu" href="#fale-comigo">Talk to me</a></li>
-            </ul>
-        </nav>
-
-        <div class="meu-nome">
-            <h1>Wellison <span>N. de Oliveira</span></h1>
-            <h3>Freelancer</h3>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader">
+            <div class="loader-square"></div>
+            <div class="loader-square"></div>
+            <div class="loader-square"></div>
+            <div class="loader-square"></div>
         </div>
     </div>
 
-    <section id="sobre">
-        <img src="./img/manno.png">
-        <div>
-            <h2>Sobre mim</h2>
-            <p>I am an experienced computer technician looking for an opportunity to full-time and/or others to improve my skills and acquire
-                more experience and knowledge. Studying Front End Programming, with experience and knowledge of application development in HTML, CSS,
-                JavaScript, React, and Node.</p>
-                <form action="https://api.whatsapp.com/send" method="GET" target="_blank">
-                    <input type="hidden" name="phone" value="+351965563654">
-                    <button 
-                    class="bg-rose-300 text-white px-4 py-2 rounded hover:bg-rose-400 transition duration text-blue-400" 
-                    type="submit">Contact Me</button>
-                </form>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Voltar ao topo">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Navigation -->
+    <header id="home">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#home" class="nav-logo">
+                    <span class="logo-text">Port<span class="logo-highlight">folio</span></span>
+                </a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+                
+                <!-- Navigation Menu -->
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link active">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#sobre" class="nav-link">
+                            <i class="fas fa-user"></i> About me
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#skills" class="nav-link">
+                            <i class="fas fa-code"></i> Skills
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#projetos" class="nav-link">
+                            <i class="fas fa-project-diagram"></i> Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contato" class="nav-link">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text" data-aos="fade-right" data-aos-duration="1000">
+                <h4 class="hero-subtitle">Olá, eu sou</h4>
+                <h1 class="hero-title">Wellison <span class="highlight">N. de Oliveira</span></h1>
+                <h3 class="hero-role">
+                    <span class="typewriter" data-text='["Freelancer", "Front End Developer", "Computer Technician"]'></span>
+                </h3>
+                <p class="hero-description">
+                   Aluno Desenvolvedor Front End apaixonado por criar experiências digitais incríveis e funcionais.
+                </p>
+                
+                <div class="hero-buttons">
+                    <a href="#contato" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Contact Me
+                    </a>
+                    <a href="./assets/CV-Wellison-Oliveira.pdf" class="btn btn-secondary" download>
+                        <i class="fas fa-download"></i> Download CV
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-image" data-aos="fade-left" data-aos-duration="1000">
+                <div class="image-wrapper">
+                    <img src="./img/manno.png" alt="Wellison Oliveira" class="profile-image">
+                    <div class="image-border"></div>
+                    <div class="image-decoration">
+                        <div class="decoration-circle"></div>
+                        <div class="decoration-circle"></div>
+                        <div class="decoration-circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <a href="#sobre" class="scroll-link">
+                <span class="mouse">
+                    <span class="wheel"></span>
+                </span>
+                <span class="scroll-text">Scroll Down</span>
+            </a>
         </div>
     </section>
 
-    <div class="projetos" id="projetos-id">
-        <h2>Main Projects</h2>
-
-        <div class="card-projetos">
-
-            <div class="card">
-                <img src="./img/netflix.png">
-                <h5>Netflix</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti ad error harum doloribus labore,
-                    odio necessitatibus officia illum rem veritatis possimus aut</p>
-                <a href="https://peaceful-starlight-02739b.netlify.app/" target="_blank">See Project</a>
+    <!-- About Section -->
+    <section id="sobre" class="about-section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">About <span class="highlight">Me</span></h2>
+                <p class="section-subtitle">Conheça mais sobre mim</p>
+                <div class="section-divider"></div>
             </div>
-
-            <div class="card">
-                <img src="./img/crono.png">
-                <h5>Cronometro</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti ad error harum doloribus labore,
-                    odio necessitatibus officia illum rem veritatis possimus aut</p>
-                <a href="https://cronometro-mpdz.netlify.app/" target="_blank">See Project</a>
+            
+            <div class="about-content">
+                <div class="about-image" data-aos="fade-right">
+                    <div class="image-container">
+                        <img src="./img/manno.png" alt="Wellison Oliveira - Foto de perfil">
+                        <div class="about-badge">
+                            <span class="badge-text">2+ Years Experience</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-text" data-aos="fade-left">
+                    <h3>Desenvolvedor Front End & Técnico em Informática</h3>
+                    <p>
+                        Sou um técnico em informática experiente em busca de oportunidades para atuar em tempo integral e/ou freelancer para aprimorar minhas habilidades e adquirir mais experiência e conhecimento. Atualmente estudo Desenvolvimento Front End, com experiência e conhecimento em desenvolvimento de aplicações em:
+                    </p>
+                    
+                    <ul class="skills-list">
+                        <li><i class="fas fa-check"></i> HTML5 & CSS3</li>
+                        <li><i class="fas fa-check"></i> JavaScript (ES6+)</li>
+                        <li><i class="fas fa-check"></i> React.js</li>
+                        <li><i class="fas fa-check"></i> Node.js</li>
+                        <li><i class="fas fa-check"></i> Bootstrap & Tailwind</li>
+                        <li><i class="fas fa-check"></i> Git & GitHub</li>
+                    </ul>
+                    
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h4>50+</h4>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>10+</h4>
+                            <p>Happy Clients</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>2+</h4>
+                            <p>Years Experience</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-buttons">
+                        <form action="https://api.whatsapp.com/send" method="GET" target="_blank">
+                            <input type="hidden" name="phone" value="+351965563654">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </button>
+                        </form>
+                        
+                        <a href="#contato" class="btn btn-secondary">
+                            <i class="fas fa-envelope"></i> Email Me
+                        </a>
+                    </div>
+                </div>
             </div>
-
         </div>
-    </div>
+    </section>
 
-    <footer id="fale-comigo">
-        <h5>Wellison Oliveira</h5>
-
-        <div class="social">
-            <a href="https://www.linkedin.com/in/wellison-nascimento-79ba6b65/" target="_blank">
-                <img src="./img/linkedin.png">
-            </a>
-
-            <a href="tel:+351965563654">
-                <img src="./img/telefone.png">
-            </a>
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">My <span class="highlight">Skills</span></h2>
+                <p class="section-subtitle">Tecnologias e ferramentas que estudo e utilizo</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="skill-icon">
+                        <i class="fab fa-html5"></i>
+                    </div>
+                    <h3>HTML5</h3>
+                    <p>Desenvolvimento de estrutura semântica e acessível</p>
+                    <div class="skill-progress">
+                        <div class="progress-bar" style="width: 95%">
+                            <span>95%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="skill-icon">
+                        <i class="fab fa-css3-alt"></i>
+                    </div>
+                    <h3>CSS3</h3>
+                    <p>Estilização moderna com Flexbox, Grid e animações</p>
+                    <div class="skill-progress">
+                        <div class="progress-bar" style="width: 90%">
+                            <span>90%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="skill-icon">
+                        <i class="fab fa-js"></i>
+                    </div>
+                    <h3>JavaScript</h3>
+                    <p>Interatividade e lógica de aplicações web</p>
+                    <div class="skill-progress">
+                        <div class="progress-bar" style="width: 85%">
+                            <span>85%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="skill-icon">
+                        <i class="fab fa-react"></i>
+                    </div>
+                    <h3>React.js</h3>
+                    <p>Desenvolvimento de interfaces modernas e dinâmicas</p>
+                    <div class="skill-progress">
+                        <div class="progress-bar" style="width: 80%">
+                            <span>80%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="skill-icon">
+                        <i class="fab fa-node-js"></i>
+                    </div>
+                    <h3>Node.js</h3>
+                    <p>Desenvolvimento backend e APIs REST</p>
+                    <div class="skill-progress">
+                        <div class="progress-bar" style="width: 75%">
+                            <span>75%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="600">
+                    <div class="skill-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Database</h3>
+                    <p>MySQL, MongoDB e PostgreSQL</p>
+                    <div class="skill-progress">
+                        <div class="progress-bar" style="width: 70%">
+                            <span>70%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
+    <!-- Projects Section -->
+    <section id="projetos" class="projects-section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">My <span class="highlight">Projects</span></h2>
+                <p class="section-subtitle">Alguns dos meus trabalhos recentes</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <!-- Project Filter -->
+            <div class="project-filter" data-aos="fade-up">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Development</button>
+                <button class="filter-btn" data-filter="mobile">Mobile</button>
+                <button class="filter-btn" data-filter="design">Design</button>
+            </div>
+            
+            <!-- Projects Grid -->
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card" data-category="web" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-image">
+                        <img src="./img/netflix.png" alt="Netflix Clone Project">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://peaceful-starlight-02739b.netlify.app/" target="_blank" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-code"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Netflix Clone</h3>
+                        <p>Clone da interface da Netflix utilizando HTML, CSS e JavaScript. Inclui carrossel de filmes e responsividade.</p>
+                        <div class="project-tags">
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card" data-category="web" data-aos="fade-up" data-aos-delay="200">
+                    <div class="project-image">
+                        <img src="./img/crono.png" alt="Cronômetro Digital">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://cronometro-mpdz.netlify.app/" target="_blank" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-code"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Cronômetro Digital</h3>
+                        <p>Cronômetro com funcionalidades de iniciar, pausar, resetar e marcação de tempo. Design moderno e responsivo.</p>
+                        <div class="project-tags">
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 (Novo) -->
+                <div class="project-card" data-category="web" data-aos="fade-up" data-aos-delay="300">
+                    <div class="project-image">
+                        <img src="./img/ecommerce.png" alt="E-commerce Website">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" target="_blank" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-code"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>E-commerce Website</h3>
+                        <p>Loja online completa com carrinho de compras, sistema de pagamento e painel administrativo.</p>
+                        <div class="project-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">Node.js</span>
+                            <span class="tag">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- View More Button -->
+            <div class="text-center mt-4" data-aos="fade-up">
+                <a href="#" class="btn btn-outline">View All Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="contact-section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Contact <span class="highlight">Me</span></h2>
+                <p class="section-subtitle">Vamos trabalhar juntos!</p>
+                <div class="section-divider"></div>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Location</h4>
+                            <p>Portugal / Remote</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>wellison@example.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Phone</h4>
+                            <p>+351 965 563 654</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-social">
+                        <h4>Follow Me</h4>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/wellison-nascimento-79ba6b65/" target="_blank" class="social-link">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/wellisonoliveira" target="_blank" class="social-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="social-link">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form" data-aos="fade-left">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                            <label for="name">Name</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                            <label for="subject">Subject</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                            <label for="message">Message</label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-text">Wellison <span class="logo-highlight">Oliveira</span></span>
+                </div>
+                
+                <p class="footer-text">
+                    Desenvolvedor Front End apaixonado por criar experiências digitais excepcionais.
+                </p>
+                
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/wellison-nascimento-79ba6b65/" target="_blank">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/wellisonoliveira" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="tel:+351965563654">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                    <a href="mailto:wellison@example.com">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> Wellison Oliveira. All rights reserved.</p>
+                <p>Designed with <i class="fas fa-heart"></i> by Wellison Oliveira</p>
+            </div>
+        </div>
     </footer>
 
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="./script_manno.js"></script>
 </body>
 
 </html>
