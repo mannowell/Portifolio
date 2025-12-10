@@ -1,57 +1,529 @@
 /**
- * Portfolio Scripts - Wellison Oliveira
- * Funcionalidades modernas e interativas
+ * Portfolio Wellison Oliveira
+ * JavaScript Completo com EmailJS Funcional
  */
 
+// ==================== CONFIGURAÇÃO ATUALIZADA ====================
+const CONFIG = {
+    EMAILJS: {
+        SERVICE_ID: 'service_Trunks5',      // ✅ Corrigido: service_Trunks5
+        TEMPLATE_ID: 'template_wgaf06',     // ✅ Corrigido: template_wgaf06
+        USER_ID: '7Ir-16h4Xh-DXuPmY'        // ✅ Corrigido: 7Ir-16h4Xh-DXuPmY
+    }
+};
+
+// ==================== INICIALIZAÇÃO ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Portfolio carregado com sucesso!');
+    console.log('🌟 Portfolio Wellison Oliveira - Iniciando...');
+    console.log('📧 Configuração EmailJS:', CONFIG.EMAILJS);
+    
+    // Carregar EmailJS primeiro
+    loadEmailJSSDK();
     
     // Inicializar todas as funcionalidades
-    initLoadingScreen();
+    initAllFeatures();
+});
+
+// ==================== CARREGAR EMAILJS ====================
+function loadEmailJSSDK() {
+    // Verificar se EmailJS já está carregado
+    if (typeof emailjs === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+        script.async = true;
+        
+        script.onload = function() {
+            console.log('✅ EmailJS SDK carregado com sucesso');
+            console.log('🔑 Inicializando com Public Key:', CONFIG.EMAILJS.USER_ID);
+            
+            // Inicializar EmailJS com sua chave pública
+            emailjs.init(CONFIG.EMAILJS.USER_ID);
+            
+            // Verificar se inicializou corretamente
+            if (emailjs) {
+                console.log('✅ EmailJS inicializado com sucesso!');
+                showAlert('✅ Sistema de email configurado!', 'success', 3000);
+            }
+            
+            // Configurar formulário
+            initContactForm();
+        };
+        
+        script.onerror = function() {
+            console.error('❌ Erro ao carregar EmailJS SDK');
+            showAlert('⚠️ O formulário está temporariamente indisponível. Use o WhatsApp para contato.', 'warning');
+        };
+        
+        document.head.appendChild(script);
+    } else {
+        // Se já estiver carregado, inicializar
+        emailjs.init(CONFIG.EMAILJS.USER_ID);
+        initContactForm();
+    }
+}
+
+// ==================== INICIALIZAR TODAS AS FUNCIONALIDADES ====================
+function initAllFeatures() {
     initNavigation();
     initBackToTop();
     initTypewriter();
     initAOS();
     initSkillBars();
-    initProjectFilter();
-    initFormValidation();
+    initGitHubStats();
     initCurrentYear();
     initScrollAnimations();
-});
-
-// ===== LOADING SCREEN =====
-function initLoadingScreen() {
-    const loadingScreen = document.getElementById('loading-screen');
+    initProjectLinks();
     
-    window.addEventListener('load', function() {
-        setTimeout(function() {
+    // Remover tela de loading após 1.5 segundos
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
             loadingScreen.classList.add('fade-out');
-            
-            setTimeout(function() {
-                loadingScreen.style.display = 'none';
+            setTimeout(() => {
+                if (loadingScreen.parentNode) {
+                    loadingScreen.parentNode.removeChild(loadingScreen);
+                }
             }, 500);
-        }, 1000);
+        }
+    }, 1500);
+}
+
+// ==================== FORMULÁRIO DE CONTATO ====================
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    if (!contactForm || !submitBtn) {
+        console.warn('Formulário não encontrado');
+        return;
+    }
+    
+    console.log('📝 Inicializando formulário de contato...');
+    console.log('🔧 Service ID:', CONFIG.EMAILJS.SERVICE_ID);
+    console.log('🔧 Template ID:', CONFIG.EMAILJS.TEMPLATE_ID);
+    
+    // Configurar validação em tempo real
+    setupRealTimeValidation();
+    
+    // Configurar envio do formulário
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        console.log('📤 Tentando enviar formulário...');
+        
+        // Validar formulário
+        if (!validateForm()) {
+            console.warn('❌ Validação do formulário falhou');
+            return;
+        }
+        
+        // Coletar dados do formulário
+        const formData = {
+            from_name: document.getElementById('name').value.trim(),
+            from_email: document.getElementById('email').value.trim(),
+            subject: document.getElementById('subject').value.trim(),
+            message: document.getElementById('message').value.trim(),
+            reply_to: document.getElementById('email').value.trim(), // Para permitir responder
+            to_name: 'Wellison Oliveira',
+            to_email: 'wellison.nascimento@hotmail.com',
+            date: new Date().toLocaleDateString('pt-BR'),
+            time: new Date().toLocaleTimeString('pt-BR')
+        };
+        
+        console.log('📨 Dados coletados:', formData);
+        
+        // Mostrar estado de carregamento
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        submitBtn.disabled = true;
+        
+        try {
+            console.log('🚀 Enviando via EmailJS...');
+            
+            // Enviar email via EmailJS
+            const response = await emailjs.send(
+                CONFIG.EMAILJS.SERVICE_ID,
+                CONFIG.EMAILJS.TEMPLATE_ID,
+                formData
+            );
+            
+            console.log('✅ Email enviado com sucesso:', response);
+            console.log('📧 Status:', response.status);
+            console.log('📧 Texto:', response.text);
+            
+            // Mostrar mensagem de sucesso
+            showFormStatus('✅ Mensagem enviada com sucesso! Entrarei em contato em breve.', 'success');
+            
+            // Limpar formulário
+            contactForm.reset();
+            
+            // Resetar labels
+            resetFormLabels();
+            
+            // Focar no primeiro campo
+            document.getElementById('name').focus();
+            
+            // Mostrar alerta de sucesso
+            setTimeout(() => {
+                showAlert('✅ Mensagem enviada! Responderei em até 24h.', 'success');
+            }, 1000);
+            
+        } catch (error) {
+            console.error('❌ Erro ao enviar email:', error);
+            
+            // Mensagem de erro detalhada
+            let errorMessage = 'Erro ao enviar mensagem. ';
+            
+            if (error.status) {
+                errorMessage += `Status: ${error.status}. `;
+            }
+            
+            if (error.text) {
+                errorMessage += `Detalhes: ${error.text}`;
+            } else {
+                errorMessage += 'Tente novamente ou use o WhatsApp para contato mais rápido.';
+            }
+            
+            showFormStatus(errorMessage, 'error');
+            
+            // Mostrar alerta de erro
+            setTimeout(() => {
+                showAlert('❌ Erro ao enviar. Use o WhatsApp para resposta mais rápida.', 'error');
+            }, 1000);
+            
+            // Oferecer alternativa após 3 segundos
+            setTimeout(() => {
+                showAlert('💡 <strong>Dica:</strong> Para resposta mais rápida, use o WhatsApp!', 'info');
+            }, 3000);
+            
+        } finally {
+            // Restaurar botão
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            console.log('🔄 Botão do formulário restaurado');
+        }
     });
 }
 
-// ===== NAVIGATION =====
+// ==================== VALIDAÇÃO EM TEMPO REAL ====================
+function setupRealTimeValidation() {
+    const fields = ['name', 'email', 'subject', 'message'];
+    
+    fields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        const errorElement = document.getElementById(`${fieldId}-error`);
+        
+        if (field && errorElement) {
+            // Validação ao sair do campo
+            field.addEventListener('blur', function() {
+                validateField(fieldId);
+            });
+            
+            // Limpar erro ao digitar
+            field.addEventListener('input', function() {
+                clearFieldError(fieldId);
+            });
+            
+            // Adicionar placeholder para funcionar com labels flutuantes
+            field.setAttribute('placeholder', ' ');
+        }
+    });
+}
+
+function validateForm() {
+    let isValid = true;
+    
+    // Validar cada campo
+    isValid = validateField('name') && isValid;
+    isValid = validateField('email') && isValid;
+    isValid = validateField('subject') && isValid;
+    isValid = validateField('message') && isValid;
+    
+    return isValid;
+}
+
+function validateField(fieldId) {
+    const field = document.getElementById(fieldId);
+    const errorElement = document.getElementById(`${fieldId}-error`);
+    const value = field.value.trim();
+    
+    if (!field || !errorElement) return true;
+    
+    // Limpar erro anterior
+    clearFieldError(fieldId);
+    
+    let isValid = true;
+    let errorMessage = '';
+    
+    switch(fieldId) {
+        case 'name':
+            if (!value) {
+                errorMessage = 'Por favor, informe seu nome.';
+                isValid = false;
+            } else if (value.length < 2) {
+                errorMessage = 'Nome muito curto (mínimo 2 caracteres).';
+                isValid = false;
+            }
+            break;
+            
+        case 'email':
+            if (!value) {
+                errorMessage = 'Por favor, informe seu email.';
+                isValid = false;
+            } else if (!isValidEmail(value)) {
+                errorMessage = 'Por favor, informe um email válido.';
+                isValid = false;
+            }
+            break;
+            
+        case 'subject':
+            if (!value) {
+                errorMessage = 'Por favor, informe o assunto.';
+                isValid = false;
+            } else if (value.length < 3) {
+                errorMessage = 'Assunto muito curto (mínimo 3 caracteres).';
+                isValid = false;
+            }
+            break;
+            
+        case 'message':
+            if (!value) {
+                errorMessage = 'Por favor, escreva sua mensagem.';
+                isValid = false;
+            } else if (value.length < 10) {
+                errorMessage = 'Mensagem muito curta (mínimo 10 caracteres).';
+                isValid = false;
+            } else if (value.length > 1000) {
+                errorMessage = 'Mensagem muito longa (máximo 1000 caracteres).';
+                isValid = false;
+            }
+            break;
+    }
+    
+    if (!isValid && errorMessage) {
+        showFieldError(fieldId, errorMessage);
+        field.classList.add('error');
+    }
+    
+    return isValid;
+}
+
+function showFieldError(fieldId, message) {
+    const errorElement = document.getElementById(`${fieldId}-error`);
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+}
+
+function clearFieldError(fieldId) {
+    const field = document.getElementById(fieldId);
+    const errorElement = document.getElementById(`${fieldId}-error`);
+    
+    if (field) {
+        field.classList.remove('error');
+    }
+    
+    if (errorElement) {
+        errorElement.textContent = '';
+        errorElement.style.display = 'none';
+    }
+}
+
+function isValidEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function resetFormLabels() {
+    const labels = document.querySelectorAll('.form-group label');
+    labels.forEach(label => {
+        if (label.previousElementSibling && label.previousElementSibling.value === '') {
+            label.classList.remove('active');
+        }
+    });
+}
+
+function showFormStatus(message, type = 'info') {
+    const statusElement = document.getElementById('form-status');
+    if (!statusElement) return;
+    
+    statusElement.textContent = message;
+    statusElement.className = 'form-status';
+    statusElement.classList.add(`status-${type}`);
+    statusElement.style.display = 'block';
+    
+    // Limpar mensagem após 5 segundos
+    setTimeout(() => {
+        statusElement.style.display = 'none';
+    }, 5000);
+}
+
+// ==================== SISTEMA DE ALERTAS ====================
+function showAlert(message, type = 'info', duration = 5000) {
+    // Criar elemento de alerta
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `global-alert alert-${type}`;
+    alertDiv.innerHTML = `
+        <div class="alert-content">
+            <i class="fas fa-${getAlertIcon(type)}"></i>
+            <span>${message}</span>
+        </div>
+        <button class="alert-close">&times;</button>
+    `;
+    
+    // Estilizar
+    alertDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        background: ${getAlertColor(type)};
+        color: white;
+        border-radius: 10px;
+        z-index: 9999;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        animation: alertSlideIn 0.3s ease;
+        max-width: 400px;
+        min-width: 300px;
+    `;
+    
+    document.body.appendChild(alertDiv);
+    
+    // Botão fechar
+    alertDiv.querySelector('.alert-close').addEventListener('click', () => {
+        alertDiv.style.animation = 'alertSlideOut 0.3s ease';
+        setTimeout(() => alertDiv.remove(), 300);
+    });
+    
+    // Remover automaticamente
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.style.animation = 'alertSlideOut 0.3s ease';
+            setTimeout(() => alertDiv.remove(), 300);
+        }
+    }, duration);
+    
+    // Adicionar estilos CSS se não existirem
+    addAlertStyles();
+}
+
+function getAlertIcon(type) {
+    switch(type) {
+        case 'success': return 'check-circle';
+        case 'error': return 'exclamation-circle';
+        case 'warning': return 'exclamation-triangle';
+        case 'info': return 'info-circle';
+        default: return 'info-circle';
+    }
+}
+
+function getAlertColor(type) {
+    switch(type) {
+        case 'success': return '#4CAF50';
+        case 'error': return '#f44336';
+        case 'warning': return '#ff9800';
+        case 'info': return '#2196F3';
+        default: return '#2196F3';
+    }
+}
+
+function addAlertStyles() {
+    if (document.querySelector('#alert-styles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'alert-styles';
+    style.textContent = `
+        @keyframes alertSlideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes alertSlideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        .alert-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .alert-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .form-group input.error,
+        .form-group textarea.error {
+            border-color: #f44336 !important;
+        }
+        .error-message {
+            color: #f44336;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        .form-status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// ==================== NAVEGAÇÃO ====================
 function initNavigation() {
     const nav = document.querySelector('.navbar');
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
     const navLinks = document.querySelectorAll('.nav-link');
     
-    // Toggle mobile menu
+    if (!nav || !menuToggle || !navMenu) return;
+    
+    // Toggle menu mobile
     menuToggle.addEventListener('click', function() {
         this.classList.toggle('active');
         navMenu.classList.toggle('active');
         
-        // Toggle aria-expanded
-        const isExpanded = this.getAttribute('aria-expanded') === 'true' || false;
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
         this.setAttribute('aria-expanded', !isExpanded);
     });
     
-    // Close mobile menu when clicking on a link
+    // Fechar menu ao clicar em um link
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
             menuToggle.classList.remove('active');
@@ -60,28 +532,25 @@ function initNavigation() {
         });
     });
     
-    // Navbar scroll effect
+    // Efeito de scroll na navbar
     window.addEventListener('scroll', function() {
         if (window.scrollY > 100) {
             nav.classList.add('scrolled');
         } else {
             nav.classList.remove('scrolled');
         }
-        
-        // Update active nav link
-        updateActiveNavLink();
     });
     
-    // Smooth scrolling for anchor links
+    // Scroll suave
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
             
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
+                e.preventDefault();
+                
                 const navHeight = nav.offsetHeight;
                 const targetPosition = targetElement.offsetTop - navHeight;
                 
@@ -92,32 +561,13 @@ function initNavigation() {
             }
         });
     });
-    
-    // Update active nav link based on scroll position
-    function updateActiveNavLink() {
-        const sections = document.querySelectorAll('section[id]');
-        const scrollPos = window.scrollY + 100;
-        
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop;
-            const sectionId = section.getAttribute('id');
-            
-            if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${sectionId}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        });
-    }
 }
 
-// ===== BACK TO TOP BUTTON =====
+// ==================== BACK TO TOP ====================
 function initBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
+    
+    if (!backToTopBtn) return;
     
     window.addEventListener('scroll', function() {
         if (window.scrollY > 300) {
@@ -135,12 +585,14 @@ function initBackToTop() {
     });
 }
 
-// ===== TYPEWRITER EFFECT =====
+// ==================== TYPEWRITER EFFECT ====================
 function initTypewriter() {
     const typewriterElement = document.querySelector('.typewriter');
     if (!typewriterElement) return;
     
-    const texts = JSON.parse(typewriterElement.getAttribute('data-text'));
+    const texts = JSON.parse(typewriterElement.getAttribute('data-text')) || 
+                 ['Desenvolvedor Front End', 'Técnico em Informática', 'Freelancer'];
+    
     let speed = 100;
     let eraseSpeed = 50;
     let pauseTime = 1500;
@@ -166,32 +618,29 @@ function initTypewriter() {
             speed = pauseTime;
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
-            textIndex++;
-            if (textIndex === texts.length) {
-                textIndex = 0;
-            }
+            textIndex = (textIndex + 1) % texts.length;
         }
         
         setTimeout(type, speed);
     }
     
-    // Start typing after a short delay
     setTimeout(type, 1000);
 }
 
-// ===== AOS INITIALIZATION =====
+// ==================== AOS ANIMATIONS ====================
 function initAOS() {
     if (typeof AOS !== 'undefined') {
         AOS.init({
-            duration: 1000,
+            duration: 800,
             once: true,
             offset: 100,
-            delay: 100
+            delay: 100,
+            easing: 'ease-out-cubic'
         });
     }
 }
 
-// ===== SKILL BARS ANIMATION =====
+// ==================== SKILL BARS ====================
 function initSkillBars() {
     const skillBars = document.querySelectorAll('.progress-bar');
     
@@ -214,91 +663,49 @@ function initSkillBars() {
     skillBars.forEach(bar => observer.observe(bar));
 }
 
-// ===== PROJECT FILTER =====
-function initProjectFilter() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
-    
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            const filterValue = this.getAttribute('data-filter');
-            
-            // Show/hide projects based on filter
-            projectCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                
-                if (filterValue === 'all' || filterValue === category) {
-                    card.style.display = 'block';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 100);
-                } else {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        card.style.display = 'none';
-                    }, 300);
-                }
-            });
-        });
-    });
-}
-
-// ===== FORM VALIDATION =====
-function initFormValidation() {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (!contactForm) return;
-    
-    contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+// ==================== GITHUB STATS ====================
+async function initGitHubStats() {
+    try {
+        const response = await fetch('https://api.github.com/users/mannowell');
         
-        // Simple validation
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const subject = document.getElementById('subject').value.trim();
-        const message = document.getElementById('message').value.trim();
-        
-        if (!name || !email || !subject || !message) {
-            alert('Por favor, preencha todos os campos!');
-            return;
+        if (!response.ok) {
+            throw new Error('Erro na API do GitHub');
         }
         
-        if (!isValidEmail(email)) {
-            alert('Por favor, insira um email válido!');
-            return;
-        }
+        const data = await response.json();
         
-        // Form submission
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
+        // Atualizar estatísticas
+        const stats = {
+            repos: data.public_repos || '10+',
+            followers: data.followers || '5+',
+            stars: '15+',
+            commits: '100+'
+        };
         
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-        submitBtn.disabled = true;
+        // Atualizar elementos DOM
+        updateElement('repo-count', stats.repos);
+        updateElement('follower-count', stats.followers);
+        updateElement('star-count', stats.stars);
+        updateElement('commit-count', stats.commits);
         
-        // API call
-        setTimeout(() => {
-            alert('Mensagem enviada com sucesso! Entrarei em contato em breve.');
-            contactForm.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 1500);
-    });
-    
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    } catch (error) {
+        console.warn('Não foi possível carregar dados do GitHub:', error);
+        // Valores padrão
+        updateElement('repo-count', '10+');
+        updateElement('follower-count', '5+');
+        updateElement('star-count', '15+');
+        updateElement('commit-count', '100+');
     }
 }
 
-// ===== CURRENT YEAR IN FOOTER =====
+function updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    }
+}
+
+// ==================== CURRENT YEAR ====================
 function initCurrentYear() {
     const yearElement = document.getElementById('currentYear');
     if (yearElement) {
@@ -306,7 +713,7 @@ function initCurrentYear() {
     }
 }
 
-// ===== SCROLL ANIMATIONS =====
+// ==================== SCROLL ANIMATIONS ====================
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('[data-aos]');
     
@@ -321,29 +728,97 @@ function initScrollAnimations() {
     animatedElements.forEach(element => observer.observe(element));
 }
 
-// ===== ADDITIONAL UTILITIES =====
-// Download CV 
-document.addEventListener('click', function(e) {
-    if (e.target.closest('a[download]')) {
-        e.preventDefault();
-        const link = e.target.closest('a[download]');
-        const filename = link.getAttribute('download') || 'CV-Wellison-Oliveira.pdf';
-        
-        alert(`Download iniciado: ${filename}\n(Obrigado pelo interesse)`);
-        
-        // In a real scenario, this would trigger the actual download
-        // window.location.href = link.href;
-    }
-});
+// ==================== PROJECT LINKS ====================
+function initProjectLinks() {
+    document.querySelectorAll('.project-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.querySelector('.fa-lock')) {
+                e.preventDefault();
+                showAlert('Este projeto é privado. Entre em contato para mais informações.', 'info');
+            }
+        });
+    });
+}
 
-// WhatsApp contact
-document.addEventListener('click', function(e) {
-    if (e.target.closest('form[action*="whatsapp.com"] button')) {
-        const form = e.target.closest('form');
-        const phoneInput = form.querySelector('input[name="phone"]');
-        const phone = phoneInput ? phoneInput.value : '+351965563654';
+// ==================== FUNÇÕES DE DEBUG ====================
+window.debug = {
+    testEmailJS: function() {
+        console.log('🧪 Testando EmailJS...');
         
-        // You can add additional logic here if needed
-        console.log(`Redirecting to WhatsApp for phone: ${phone}`);
+        if (typeof emailjs === 'undefined') {
+            console.error('EmailJS não carregado');
+            showAlert('EmailJS não está carregado', 'error');
+            return false;
+        }
+        
+        console.log('✅ EmailJS carregado:', emailjs);
+        console.log('🔧 Service ID:', CONFIG.EMAILJS.SERVICE_ID);
+        console.log('🔧 Template ID:', CONFIG.EMAILJS.TEMPLATE_ID);
+        console.log('🔑 User ID:', CONFIG.EMAILJS.USER_ID);
+        
+        showAlert('✅ EmailJS está funcionando! Teste o formulário.', 'success');
+        return true;
+    },
+    
+    testForm: function() {
+        console.log('🧪 Testando formulário...');
+        
+        const testData = {
+            from_name: 'Teste do Sistema',
+            from_email: 'teste@email.com',
+            subject: 'Teste do Formulário - Portfolio',
+            message: 'Esta é uma mensagem de teste do formulário de contato do portfolio.',
+            reply_to: 'teste@email.com',
+            to_name: 'Wellison Oliveira',
+            to_email: 'wellison.nascimento@hotmail.com',
+            date: new Date().toLocaleDateString('pt-BR'),
+            time: new Date().toLocaleTimeString('pt-BR')
+        };
+        
+        if (typeof emailjs === 'undefined') {
+            console.error('EmailJS não disponível');
+            showAlert('EmailJS não carregado', 'error');
+            return;
+        }
+        
+        console.log('🚀 Enviando teste...');
+        showAlert('🚀 Enviando email de teste...', 'info');
+        
+        emailjs.send(CONFIG.EMAILJS.SERVICE_ID, CONFIG.EMAILJS.TEMPLATE_ID, testData)
+            .then(response => {
+                console.log('✅ Teste enviado com sucesso:', response);
+                showAlert('✅ Teste enviado com sucesso! Verifique seu email.', 'success');
+            })
+            .catch(error => {
+                console.error('❌ Erro no teste:', error);
+                showAlert('❌ Erro no teste: ' + error.text, 'error');
+            });
+    },
+    
+    showConfig: function() {
+        console.log('⚙️ Configuração atual:', CONFIG);
+        showAlert('Configuração mostrada no console (F12)', 'info');
+        return CONFIG;
+    },
+    
+    checkEmailJSStatus: function() {
+        if (typeof emailjs === 'undefined') {
+            console.log('❌ EmailJS não carregado');
+            return false;
+        }
+        
+        console.log('✅ EmailJS está carregado');
+        console.log('🔧 Service ID configurado:', CONFIG.EMAILJS.SERVICE_ID);
+        console.log('🔧 Template ID configurado:', CONFIG.EMAILJS.TEMPLATE_ID);
+        console.log('🔑 User ID configurado:', CONFIG.EMAILJS.USER_ID);
+        
+        return true;
     }
-});
+};
+
+console.log('🚀 Portfolio Wellison Oliveira iniciado!');
+console.log('📧 EmailJS configurado com:');
+console.log('   Service ID:', CONFIG.EMAILJS.SERVICE_ID);
+console.log('   Template ID:', CONFIG.EMAILJS.TEMPLATE_ID);
+console.log('   User ID:', CONFIG.EMAILJS.USER_ID);
+console.log('ℹ️ Use window.debug para testar funcionalidades.');
