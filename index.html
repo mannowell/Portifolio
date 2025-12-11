@@ -84,7 +84,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="#contato" class="nav-link">
-                            <i class="fas fa-envelope"></i> Contatos
+                            <i class="fas fa-envelope"></i> Contato
                         </a>
                     </li>
                 </ul>
@@ -192,13 +192,10 @@
                     </div>
                     
                     <div class="contact-buttons">
-                        <form action="https://api.whatsapp.com/send" method="GET" target="_blank">
-                            <input type="hidden" name="phone" value="+351965563654">
-                            <input type="hidden" name="text" value="Olá Wellison! Vi seu portfolio e gostaria de conversar sobre um projeto.">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fab fa-whatsapp"></i> WhatsApp
-                            </button>
-                        </form>
+                        <a href="https://wa.me/351965563654?text=Olá%20Wellison!%20Vi%20seu%20portfolio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." 
+                           target="_blank" class="btn btn-primary">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
                         
                         <a href="#contato" class="btn btn-secondary">
                             <i class="fas fa-envelope"></i> Enviar Email
@@ -400,7 +397,7 @@
                         </div>
                     </div>
                 </div>
-                
+            </div>
             
             <!-- GitHub Stats -->
             <div class="github-stats" data-aos="fade-up">
@@ -435,193 +432,156 @@
     </section>
 
     <!-- Contact Section -->
-<section id="contato" class="contact-section">
-    <div class="section-container">
-        <div class="section-header" data-aos="fade-up">
-            <h2 class="section-title">Entre em <span class="highlight">Contato</span></h2>
-            <p class="section-subtitle">Vamos trabalhar juntos!</p>
-            <div class="section-divider"></div>
-        </div>
-        
-        <div class="contact-content">
-            <!-- Informações de Contato (Lado Esquerdo) -->
-            <div class="contact-info" data-aos="fade-right">
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>Localização</h4>
-                        <p>Portugal / Trabalho Remoto</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>Email</h4>
-                        <p>wellison.nascimento@hotmail.com</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone-alt"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>Telefone</h4>
-                        <p>+351 965 563 654</p>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <div class="contact-text">
-                        <h4>WhatsApp</h4>
-                        <p>+351 965 563 654</p>
-                    </div>
-                </div>
-                
-                <div class="contact-social">
-                    <h4>Conecte-se Comigo</h4>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/wellison-nascimento-79ba6b65/" target="_blank" class="social-link" title="LinkedIn">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                        <a href="https://github.com/mannowell" target="_blank" class="social-link" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://www.instagram.com/wellison.nascimento/" target="_blank" class="social-link" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.facebook.com/wellison.nascimento.7/" target="_blank" class="social-link" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                    </div>
-                </div>
+    <section id="contato" class="contact-section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Entre em <span class="highlight">Contato</span></h2>
+                <p class="section-subtitle">Vamos trabalhar juntos!</p>
+                <div class="section-divider"></div>
             </div>
             
-            <form class="fale-conosco" id="contactForm" aria-labelledby="formTitle">
-    <!-- Campos Ocultos para EmailJS -->
-    <input type="hidden" id="service_id" value="service_l1uuk45">
-    <input type="hidden" id="template_id" value="template_wgadfo8">
-    <input type="hidden" id="user_id" value="7ir-16h4Xh-tXuPmY">
-    
-    <div id="form-status"></div>
-    
-    <h2 id="formTitle">Fale conosco</h2>
-    <p>Se você tiver alguma dúvida, sugestão ou apenas quiser bater um papo, preencha o formulário abaixo e entraremos em contato o mais rápido possível!</p>
-
-    <!-- Campo Nome -->
-    <div class="form-group">
-        <label for="name">Nome: *</label>
-        <input 
-            placeholder="Seu nome" 
-            type="text" 
-            id="name" 
-            name="from_name" 
-            required 
-            aria-required="true"
-            aria-describedby="name-error"
-        >
-        <div class="error-message" id="name-error" aria-live="polite"></div>
-    </div>
-
-    <!-- Campo Telefone -->
-    <div class="form-group">
-        <label for="phone">Telefone: *</label>
-        <input 
-            placeholder="Seu telefone" 
-            type="tel" 
-            id="phone" 
-            name="telefone" 
-            required 
-            aria-required="true"
-            aria-describedby="phone-error"
-        >
-        <div class="error-message" id="phone-error" aria-live="polite"></div>
-    </div>
-
-    <!-- Campo Email -->
-    <div class="form-group">
-        <label for="email">Email: *</label>
-        <input 
-            placeholder="Seu email" 
-            type="email" 
-            id="email" 
-            name="from_email" 
-            required 
-            aria-required="true"
-            aria-describedby="email-error"
-        >
-        <div class="error-message" id="email-error" aria-live="polite"></div>
-    </div>
-
-    <!-- Campo Assunto -->
-    <div class="form-group">
-        <label for="subject">Assunto: *</label>
-        <input 
-            placeholder="Assunto da mensagem" 
-            type="text" 
-            id="subject" 
-            name="subject" 
-            required 
-            aria-required="true"
-            aria-describedby="subject-error"
-        >
-        <div class="error-message" id="subject-error" aria-live="polite"></div>
-    </div>
-
-    <!-- Campo Mensagem -->
-    <div class="form-group">
-        <label for="message">Descrição do problema: *</label>
-        <textarea 
-            placeholder="Digite sua mensagem aqui..." 
-            id="message" 
-            name="message" 
-            rows="5" 
-            required 
-            aria-required="true"
-            aria-describedby="message-error"
-        ></textarea>
-        <div class="error-message" id="message-error" aria-live="polite"></div>
-    </div>
-
-    <div class="form-actions">
-        <button type="submit" id="submit-btn" class="btn btn-primary">
-            <i class="fas fa-paper-plane"></i> Enviar Mensagem
-        </button>
-        <button type="button" class="cancel-button" onclick="fecharFormulario()">Cancelar</button>
-    </div>
-    
-    <p class="form-note">
-        <i class="fas fa-lock"></i> Seus dados estão seguros. Não compartilho informações.
-    </p>
-</form>
-
-<div class="mascara-form" id="maskForm"></div>
+            <div class="contact-content">
+                <!-- Informações de Contato (Lado Esquerdo) -->
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Localização</h4>
+                            <p>Portugal / Trabalho Remoto</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <p>wellison.nascimento@hotmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>Telefone</h4>
+                            <p>+351 965 563 654</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>WhatsApp</h4>
+                            <p>+351 965 563 654</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-social">
+                        <h4>Conecte-se Comigo</h4>
+                        <div class="social-links">
+                            <a href="https://www.linkedin.com/in/wellison-nascimento-79ba6b65/" target="_blank" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://github.com/mannowell" target="_blank" class="social-link" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://www.instagram.com/wellison.nascimento/" target="_blank" class="social-link" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.facebook.com/wellison.nascimento.7/" target="_blank" class="social-link" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 
-                <!-- Alternativas de Contato -->
-                <div class="contact-alternatives">
-                    <p class="alternative-title">Prefere contato direto?</p>
-                    <div class="alternative-buttons">
-                        <a href="https://wa.me/351965563654?text=Olá%20Wellison!%20Vi%20seu%20portfolio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." 
-                           target="_blank" class="btn btn-success">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </a>
-                        <a href="mailto:wellison.nascimento@hotmail.com" class="btn btn-outline">
-                            <i class="fas fa-envelope"></i> Email Direto
-                        </a>
+                <!-- Formulário de Contato (Lado Direito) -->
+                <div class="contact-form" data-aos="fade-left">
+                    <h3>Envie uma Mensagem</h3>
+                    <p>Preencha o formulário abaixo. Responderei em até 24 horas!</p>
+                    
+                    <form id="contactForm" method="post" action="https://api.staticforms.xyz/submit">
+                        <!-- Campos ocultos do StaticForms -->
+                        <input type="hidden" name="apiKey" value="sf_6kef4njjbg47430h28g0d8jk">
+                        <input type="hidden" name="replyTo" value="wellison.nascimento@hotmail.com">
+                        <input type="text" name="honeypot" style="display: none" tabindex="-1" autocomplete="off">
+                        <input type="hidden" name="redirectTo" value="https://mannowell.github.io/portfolio/">
+                        <input type="hidden" name="accessKey" value="contact-form">
+                        
+                        <!-- Mensagem de Status -->
+                        <div id="form-message" class="form-message"></div>
+                        
+                        <!-- Campo Nome -->
+                        <div class="form-group">
+                            <input type="text" id="name" name="nome" placeholder=" " required>
+                            <label for="name">Seu Nome *</label>
+                            <div class="error-message" id="name-error"></div>
+                        </div>
+                        
+                        <!-- Campo Email -->
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder=" " required>
+                            <label for="email">Seu Email *</label>
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+                        
+                        <!-- Campo Telefone -->
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="telefone" placeholder=" " required>
+                            <label for="phone">Seu Telefone *</label>
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+                        
+                        <!-- Campo Assunto -->
+                        <div class="form-group">
+                            <input type="text" id="subject" name="assunto" placeholder=" " required>
+                            <label for="subject">Assunto *</label>
+                            <div class="error-message" id="subject-error"></div>
+                        </div>
+                        
+                        <!-- Campo Mensagem -->
+                        <div class="form-group">
+                            <textarea id="message" name="mensagem" rows="5" placeholder=" " required></textarea>
+                            <label for="message">Sua Mensagem *</label>
+                            <div class="error-message" id="message-error"></div>
+                        </div>
+                        
+                        <!-- Botão de Envio -->
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary" id="submit-btn">
+                                <i class="fas fa-paper-plane"></i> Enviar Mensagem
+                            </button>
+                            
+                            <p class="form-note">
+                                <i class="fas fa-lock"></i> Seus dados estão seguros. Não compartilho informações.
+                            </p>
+                        </div>
+                    </form>
+                    
+                    <!-- Alternativas de Contato -->
+                    <div class="contact-alternatives">
+                        <p class="alternative-title">Prefere contato direto?</p>
+                        <div class="alternative-buttons">
+                            <a href="https://wa.me/351965563654?text=Olá%20Wellison!%20Vi%20seu%20portfolio%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto." 
+                               target="_blank" class="btn btn-success">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                            <a href="mailto:wellison.nascimento@hotmail.com" class="btn btn-outline">
+                                <i class="fas fa-envelope"></i> Email Direto
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -676,112 +636,6 @@
     
     <!-- Custom JavaScript -->
     <script src="./script_manno.js"></script>
-    <script>
-        // Elementos do DOM
-        const formulario = document.querySelector(".fale-conosco");
-        const mascara = document.getElementById("maskForm");
-        const contactForm = document.getElementById("contactForm");
-        const statusMessage = document.getElementById("statusMessage");
-        const submitBtn = document.getElementById("submitBtn");
-
-        // Função para mostrar mensagens de status
-        function mostrarStatus(tipo, mensagem) {
-            statusMessage.className = `status-message ${tipo}`;
-            statusMessage.textContent = mensagem;
-            statusMessage.style.display = 'block';
-        }
-
-        // Função para limpar status
-        function limparStatus() {
-            statusMessage.style.display = 'none';
-            statusMessage.className = 'status-message';
-        }
-
-        // Função para abrir formulário
-        function abrirFormulario() {
-            formulario.classList.add("visible");
-            mascara.classList.add("visible");
-            limparStatus();
-            // Focar no primeiro campo
-            document.getElementById('name').focus();
-        }
-
-        // Função para fechar formulário
-        function fecharFormulario() {
-            formulario.classList.remove("visible");
-            mascara.classList.remove("visible");
-            limparStatus();
-            contactForm.reset();
-        }
-
-        // Fechar formulário ao clicar na máscara
-        mascara.addEventListener('click', fecharFormulario);
-
-        // Fechar formulário com ESC
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && formulario.classList.contains('visible')) {
-                fecharFormulario();
-            }
-        });
-
-        // Validação de telefone em tempo real
-        document.getElementById('phone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length <= 11) {
-                if (value.length === 11) {
-                    value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-                } else if (value.length === 10) {
-                    value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-                }
-                e.target.value = value;
-            }
-        });
-
-        // Manipulação do envio do formulário
-        contactForm.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            // Desabilitar botão de envio
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
-            mostrarStatus('loading', 'Enviando mensagem...');
-
-            // Coletar dados do formulário
-            const formData = new FormData();
-            formData.append('nome', document.getElementById('name').value);
-            formData.append('telefone', document.getElementById('phone').value);
-            formData.append('email', document.getElementById('email').value);
-            formData.append('mensagem', document.getElementById('message').value);
-            formData.append('assunto', 'Contato - Canalizadores Mario & Luigi');
-
-            try {
-                // Simulação de envio (você pode integrar com seu backend aqui)
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                // Aqui você colocaria a integração real com seu sistema de email
-                // Por exemplo: fetch('/enviar-email', { method: 'POST', body: formData })
-                
-                mostrarStatus('success', 'Mensagem enviada com sucesso! Entraremos em contato em breve.');
-                
-                // Limpar formulário após sucesso
-                setTimeout(() => {
-                    fecharFormulario();
-                }, 3000);
-                
-            } catch (error) {
-                console.error('Erro ao enviar formulário:', error);
-                mostrarStatus('error', 'Erro ao enviar mensagem. Tente novamente ou entre em contato por telefone.');
-            } finally {
-                // Reabilitar botão
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Enviar formulário';
-            }
-        });
-
-        // Tornar funções globais para onclick
-        window.abrirFormulario = abrirFormulario;
-        window.fecharFormulario = fecharFormulario;
-    </script>
 </body>
 
 </html>
