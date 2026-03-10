@@ -4,9 +4,9 @@
  */
 
 // ==================== INICIALIZAÇÃO ====================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('🌟 Portfolio Wellison Oliveira - Iniciando...');
-    
+
     // Inicializar todas as funcionalidades
     initAllFeatures();
 });
@@ -22,8 +22,10 @@ function initAllFeatures() {
     initCurrentYear();
     initScrollAnimations();
     initProjectLinks();
-    initContactForm(); // Inicializar formulário de contato
-    
+    initContactForm();
+    initParticles();
+    initCounters();
+
     // Remover tela de loading após 1.5 segundos
     setTimeout(() => {
         const loadingScreen = document.getElementById('loading-screen');
@@ -41,21 +43,21 @@ function initContactForm() {
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submit-btn');
     const formMessage = document.getElementById('form-message');
-    
+
     if (!contactForm || !submitBtn || !formMessage) {
         console.warn('❌ Elementos do formulário não encontrados');
         return;
     }
-    
+
     console.log('📝 Inicializando formulário de contato com StaticForms...');
-    
+
     // Configurar validação em tempo real
     setupRealTimeValidation();
-    
+
     // Formatação de telefone em tempo real
     const phoneInput = document.getElementById('phone');
     if (phoneInput) {
-        phoneInput.addEventListener('input', function(e) {
+        phoneInput.addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length <= 11) {
                 if (value.length === 11) {
@@ -67,38 +69,38 @@ function initContactForm() {
             }
         });
     }
-    
+
     // Configurar envio do formulário
-    contactForm.addEventListener('submit', async function(e) {
+    contactForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
         console.log('📤 Tentando enviar formulário via StaticForms...');
-        
+
         // Validar formulário
         if (!validateForm()) {
             console.warn('❌ Validação do formulário falhou');
             return;
         }
-        
+
         // Limpar mensagens de erro
         clearErrors();
-        
+
         // Desabilitar botão de envio
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
         submitBtn.disabled = true;
-        
+
         // Mostrar mensagem de carregamento
         formMessage.textContent = 'Enviando mensagem...';
         formMessage.style.color = 'var(--info-color)';
         formMessage.style.backgroundColor = 'rgba(33, 150, 243, 0.1)';
         formMessage.style.borderColor = 'rgba(33, 150, 243, 0.3)';
         formMessage.style.display = 'block';
-        
+
         try {
             // Coletar dados do formulário
             const formData = new FormData(contactForm);
-            
+
             // Log dos dados que serão enviados (sem valores sensíveis)
             console.log('📨 Enviando para StaticForms API...');
             console.log('📋 Campos do formulário:', {
@@ -110,7 +112,7 @@ function initContactForm() {
                 apiKey: formData.get('apiKey') ? 'Presente' : 'Ausente',
                 replyTo: formData.get('replyTo')
             });
-            
+
             // Enviar para StaticForms API
             const response = await fetch(contactForm.action, {
                 method: 'POST',
@@ -119,13 +121,13 @@ function initContactForm() {
                     'Accept': 'application/json',
                 },
             });
-            
+
             console.log('📡 Status da resposta:', response.status, response.statusText);
-            
+
             // Tentar ler a resposta como JSON
             let responseData;
             const contentType = response.headers.get('content-type');
-            
+
             if (contentType && contentType.includes('application/json')) {
                 try {
                     responseData = await response.json();
@@ -139,49 +141,49 @@ function initContactForm() {
                 console.log('📦 Resposta da API (texto):', textResponse);
                 responseData = { message: textResponse };
             }
-            
+
             // Verificar se foi sucesso (status 200-299 ou resposta positiva da API)
             const isSuccess = response.ok || (response.status >= 200 && response.status < 300);
-            
+
             // Verificar se a resposta da API indica erro explícito
             const hasExplicitError = responseData && (
-                responseData.success === false || 
-                responseData.error || 
+                responseData.success === false ||
+                responseData.error ||
                 (responseData.message && responseData.message.toLowerCase().includes('error'))
             );
-            
+
             if (isSuccess && !hasExplicitError) {
                 console.log('✅ Formulário enviado com sucesso:', responseData);
-                
+
                 // Mostrar mensagem de sucesso
                 formMessage.textContent = '✅ Mensagem enviada com sucesso! Em breve retornarei o contato.';
                 formMessage.style.color = 'var(--success-color)';
                 formMessage.style.backgroundColor = 'rgba(76, 175, 80, 0.1)';
                 formMessage.style.borderColor = 'rgba(76, 175, 80, 0.3)';
-                
+
                 // Limpar formulário
                 contactForm.reset();
-                
+
                 // Resetar labels
                 resetFormLabels();
-                
+
                 // Mostrar alerta de sucesso
                 showAlert('✅ Mensagem enviada com sucesso! Em breve retornarei o contato.', 'success');
-                
+
                 // Focar no primeiro campo após 1 segundo
                 setTimeout(() => {
                     document.getElementById('name').focus();
                 }, 1000);
-                
+
                 // Ocultar mensagem após 5 segundos
                 setTimeout(() => {
                     formMessage.style.display = 'none';
                 }, 5000);
-                
+
             } else {
                 // Tratar diferentes tipos de erro
                 let errorMessage = 'Erro ao enviar mensagem.';
-                
+
                 if (responseData && responseData.message) {
                     errorMessage = responseData.message;
                 } else if (responseData && responseData.error) {
@@ -193,7 +195,7 @@ function initContactForm() {
                 } else {
                     errorMessage = 'Erro ao enviar. Use o WhatsApp ou email para resposta mais rápida.';
                 }
-                
+
                 console.error('❌ Erro na resposta da API:', {
                     status: response.status,
                     statusText: response.statusText,
@@ -201,10 +203,10 @@ function initContactForm() {
                     isSuccess,
                     hasExplicitError
                 });
-                
+
                 throw new Error(errorMessage);
             }
-            
+
         } catch (error) {
             console.error('❌ Erro ao enviar formulário:', error);
             console.error('❌ Detalhes do erro:', {
@@ -212,16 +214,16 @@ function initContactForm() {
                 message: error.message,
                 stack: error.stack
             });
-            
+
             // Mensagem de erro baseada no tipo de erro
             let errorMessage = '❌ Erro ao enviar. Use o WhatsApp ou email para resposta mais rápida.';
             let alertMessage = '❌ Erro ao enviar. Use o WhatsApp ou email para resposta mais rápida.';
-            
+
             // Tratar diferentes tipos de erro
             if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                // Erro de conexão/rede
-                errorMessage = '✅ Mensagem enviada com sucesso! Em breve retornarei o contato.', 'success';
-                alertMessage = '✅ Mensagem enviada com sucesso! Em breve retornarei o contato.', 'success';
+                // Erro de conexão/rede — o StaticForms pode ter recebido mesmo assim
+                errorMessage = '✅ Mensagem enviada! Se não receber retorno, use o WhatsApp.';
+                alertMessage = '✅ Mensagem provavelmente enviada! Em breve retornaremos o contato.';
             } else if (error.message && error.message.includes('Use o WhatsApp')) {
                 // Mensagem já formatada
                 errorMessage = `❌ ${error.message}`;
@@ -231,16 +233,16 @@ function initContactForm() {
                 errorMessage = `❌ ${error.message}`;
                 alertMessage = '❌ Erro ao enviar. Use o WhatsApp ou email para resposta mais rápida.';
             }
-            
+
             // Mostrar mensagem de erro no formulário
             formMessage.textContent = errorMessage;
             formMessage.style.color = 'var(--error-color)';
             formMessage.style.backgroundColor = 'rgba(90, 228, 49, 0.1)';
             formMessage.style.borderColor = 'rgba(35, 243, 7, 0.3)';
-            
+
             // Mostrar alerta de erro
             showAlert(alertMessage, 'info');
-            
+
         } finally {
             // Restaurar botão
             submitBtn.innerHTML = originalBtnText;
@@ -253,19 +255,19 @@ function initContactForm() {
 // ==================== FUNÇÕES AUXILIARES DO FORMULÁRIO ====================
 function setupRealTimeValidation() {
     const fields = ['name', 'email', 'phone', 'subject', 'message'];
-    
+
     fields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         const errorElement = document.getElementById(`${fieldId}-error`);
-        
+
         if (field && errorElement) {
             // Validação ao sair do campo
-            field.addEventListener('blur', function() {
+            field.addEventListener('blur', function () {
                 validateField(fieldId);
             });
-            
+
             // Limpar erro ao digitar
-            field.addEventListener('input', function() {
+            field.addEventListener('input', function () {
                 clearFieldError(fieldId);
             });
         }
@@ -275,14 +277,14 @@ function setupRealTimeValidation() {
 function validateForm() {
     let isValid = true;
     const requiredFields = ['name', 'email', 'phone', 'subject', 'message'];
-    
+
     // Validar cada campo obrigatório
     requiredFields.forEach(fieldId => {
         if (!validateField(fieldId)) {
             isValid = false;
         }
     });
-    
+
     return isValid;
 }
 
@@ -290,16 +292,16 @@ function validateField(fieldId) {
     const field = document.getElementById(fieldId);
     const errorElement = document.getElementById(`${fieldId}-error`);
     const value = field.value.trim();
-    
+
     if (!field || !errorElement) return true;
-    
+
     // Limpar erro anterior
     clearFieldError(fieldId);
-    
+
     let isValid = true;
     let errorMessage = '';
-    
-    switch(fieldId) {
+
+    switch (fieldId) {
         case 'name':
             if (!value) {
                 errorMessage = 'Por favor, informe seu nome.';
@@ -309,7 +311,7 @@ function validateField(fieldId) {
                 isValid = false;
             }
             break;
-            
+
         case 'email':
             if (!value) {
                 errorMessage = 'Por favor, informe seu email.';
@@ -319,7 +321,7 @@ function validateField(fieldId) {
                 isValid = false;
             }
             break;
-            
+
         case 'phone':
             if (!value) {
                 errorMessage = 'Por favor, informe seu telefone.';
@@ -329,7 +331,7 @@ function validateField(fieldId) {
                 isValid = false;
             }
             break;
-            
+
         case 'subject':
             if (!value) {
                 errorMessage = 'Por favor, informe o assunto.';
@@ -339,7 +341,7 @@ function validateField(fieldId) {
                 isValid = false;
             }
             break;
-            
+
         case 'message':
             if (!value) {
                 errorMessage = 'Por favor, escreva sua mensagem.';
@@ -350,11 +352,11 @@ function validateField(fieldId) {
             }
             break;
     }
-    
+
     if (!isValid && errorMessage) {
         showFieldError(fieldId, errorMessage);
     }
-    
+
     return isValid;
 }
 
@@ -373,11 +375,11 @@ function isValidPhone(phone) {
 function showFieldError(fieldId, message) {
     const field = document.getElementById(fieldId);
     const errorElement = document.getElementById(`${fieldId}-error`);
-    
+
     if (field) {
         field.classList.add('error');
     }
-    
+
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.add('show');
@@ -387,11 +389,11 @@ function showFieldError(fieldId, message) {
 function clearFieldError(fieldId) {
     const field = document.getElementById(fieldId);
     const errorElement = document.getElementById(`${fieldId}-error`);
-    
+
     if (field) {
         field.classList.remove('error');
     }
-    
+
     if (errorElement) {
         errorElement.textContent = '';
         errorElement.classList.remove('show');
@@ -422,15 +424,15 @@ function showAlert(message, type = 'info', duration = 5000) {
         </div>
         <button class="alert-close">&times;</button>
     `;
-    
+
     document.body.appendChild(alertDiv);
-    
+
     // Botão fechar
     alertDiv.querySelector('.alert-close').addEventListener('click', () => {
         alertDiv.style.animation = 'alertSlideOut 0.3s ease';
         setTimeout(() => alertDiv.remove(), 300);
     });
-    
+
     // Remover automaticamente
     setTimeout(() => {
         if (alertDiv.parentNode) {
@@ -441,7 +443,7 @@ function showAlert(message, type = 'info', duration = 5000) {
 }
 
 function getAlertIcon(type) {
-    switch(type) {
+    switch (type) {
         case 'success': return 'check-circle';
         case 'error': return 'exclamation-circle';
         case 'warning': return 'exclamation-triangle';
@@ -456,56 +458,56 @@ function initNavigation() {
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     if (!nav || !menuToggle || !navMenu) return;
-    
+
     // Toggle menu mobile
-    menuToggle.addEventListener('click', function() {
+    menuToggle.addEventListener('click', function () {
         this.classList.toggle('active');
         navMenu.classList.toggle('active');
-        
+
         const isExpanded = this.getAttribute('aria-expanded') === 'true';
         this.setAttribute('aria-expanded', !isExpanded);
     });
-    
+
     // Fechar menu ao clicar em um link
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             menuToggle.classList.remove('active');
             navMenu.classList.remove('active');
             menuToggle.setAttribute('aria-expanded', 'false');
-            
+
             // Atualizar link ativo
             navLinks.forEach(l => l.classList.remove('active'));
             this.classList.add('active');
         });
     });
-    
+
     // Efeito de scroll na navbar
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         if (window.scrollY > 100) {
             nav.classList.add('scrolled');
         } else {
             nav.classList.remove('scrolled');
         }
-        
+
         // Atualizar link ativo baseado na seção visível
         updateActiveNavLink();
     });
-    
+
     // Scroll suave
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
-            
+
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 e.preventDefault();
-                
+
                 const navHeight = nav.offsetHeight;
                 const targetPosition = targetElement.offsetTop - navHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -518,18 +520,18 @@ function initNavigation() {
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link');
-    
+
     let current = '';
     sections.forEach(section => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.clientHeight;
         const navHeight = document.querySelector('.navbar').offsetHeight;
-        
+
         if (scrollY >= (sectionTop - navHeight - 100)) {
             current = section.getAttribute('id');
         }
     });
-    
+
     navLinks.forEach(link => {
         link.classList.remove('active');
         if (link.getAttribute('href') === `#${current}`) {
@@ -541,18 +543,18 @@ function updateActiveNavLink() {
 // ==================== BACK TO TOP ====================
 function initBackToTop() {
     const backToTopBtn = document.getElementById('back-to-top');
-    
+
     if (!backToTopBtn) return;
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         if (window.scrollY > 300) {
             backToTopBtn.classList.add('visible');
         } else {
             backToTopBtn.classList.remove('visible');
         }
     });
-    
-    backToTopBtn.addEventListener('click', function() {
+
+    backToTopBtn.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -564,20 +566,20 @@ function initBackToTop() {
 function initTypewriter() {
     const typewriterElement = document.querySelector('.typewriter');
     if (!typewriterElement) return;
-    
-    const texts = JSON.parse(typewriterElement.getAttribute('data-text')) || 
-                 ['Desenvolvedor Front End', 'Técnico em Informática', 'Freelancer'];
-    
+
+    const texts = JSON.parse(typewriterElement.getAttribute('data-text')) ||
+        ['Desenvolvedor Front End', 'Técnico em Informática', 'Freelancer'];
+
     let speed = 100;
     let eraseSpeed = 50;
     let pauseTime = 1500;
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    
+
     function type() {
         const currentText = texts[textIndex];
-        
+
         if (isDeleting) {
             typewriterElement.textContent = currentText.substring(0, charIndex - 1);
             charIndex--;
@@ -587,7 +589,7 @@ function initTypewriter() {
             charIndex++;
             speed = 100;
         }
-        
+
         if (!isDeleting && charIndex === currentText.length) {
             isDeleting = true;
             speed = pauseTime;
@@ -595,10 +597,10 @@ function initTypewriter() {
             isDeleting = false;
             textIndex = (textIndex + 1) % texts.length;
         }
-        
+
         setTimeout(type, speed);
     }
-    
+
     setTimeout(type, 1000);
 }
 
@@ -618,23 +620,23 @@ function initAOS() {
 // ==================== SKILL BARS ====================
 function initSkillBars() {
     const skillBars = document.querySelectorAll('.progress-bar');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const progressBar = entry.target;
                 const width = progressBar.style.width;
                 progressBar.style.width = '0%';
-                
+
                 setTimeout(() => {
                     progressBar.style.width = width;
                 }, 300);
-                
+
                 observer.unobserve(progressBar);
             }
         });
     }, { threshold: 0.5 });
-    
+
     skillBars.forEach(bar => observer.observe(bar));
 }
 
@@ -642,27 +644,37 @@ function initSkillBars() {
 async function initGitHubStats() {
     try {
         const response = await fetch('https://api.github.com/users/mannowell');
-        
+
         if (!response.ok) {
             throw new Error('Erro na API do GitHub');
         }
-        
+
         const data = await response.json();
-        
+
+        // Buscar estrelas somando dos repositórios
+        let totalStars = 0;
+        try {
+            const reposResponse = await fetch('https://api.github.com/users/mannowell/repos?per_page=100');
+            if (reposResponse.ok) {
+                const repos = await reposResponse.json();
+                totalStars = repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+            }
+        } catch (_) { /* ignora erro de repos */ }
+
         // Atualizar estatísticas
         const stats = {
             repos: data.public_repos || '10+',
             followers: data.followers || '5+',
-            stars: data.public_gists || '15+',
+            stars: totalStars || data.public_repos || '5+',
             commits: '100+'
         };
-        
+
         // Atualizar elementos DOM
         updateElement('repo-count', stats.repos);
         updateElement('follower-count', stats.followers);
         updateElement('star-count', stats.stars);
         updateElement('commit-count', stats.commits);
-        
+
     } catch (error) {
         console.warn('Não foi possível carregar dados do GitHub:', error);
         // Valores padrão
@@ -691,7 +703,7 @@ function initCurrentYear() {
 // ==================== SCROLL ANIMATIONS ====================
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('[data-aos]');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -699,14 +711,14 @@ function initScrollAnimations() {
             }
         });
     }, { threshold: 0.1 });
-    
+
     animatedElements.forEach(element => observer.observe(element));
 }
 
 // ==================== PROJECT LINKS ====================
 function initProjectLinks() {
     document.querySelectorAll('.project-link').forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             if (this.querySelector('.fa-lock')) {
                 e.preventDefault();
                 showAlert('Este projeto é privado. Entre em contato para mais informações.', 'info');
@@ -717,25 +729,25 @@ function initProjectLinks() {
 
 // ==================== FUNÇÕES DE DEBUG ====================
 window.debug = {
-    testForm: function() {
+    testForm: function () {
         console.log('🧪 Testando formulário...');
-        
+
         // Preencher automaticamente o formulário para teste
         document.getElementById('name').value = 'Teste do Sistema';
         document.getElementById('email').value = 'teste@email.com';
         document.getElementById('phone').value = '(11) 99999-9999';
         document.getElementById('subject').value = 'Teste do Formulário - Portfolio';
         document.getElementById('message').value = 'Esta é uma mensagem de teste do formulário de contato do portfolio.';
-        
+
         showAlert('✅ Formulário preenchido para teste! Clique em "Enviar Mensagem".', 'success');
     },
-    
-    clearForm: function() {
+
+    clearForm: function () {
         document.getElementById('contactForm').reset();
         showAlert('✅ Formulário limpo!', 'success');
     },
-    
-    validateForm: function() {
+
+    validateForm: function () {
         const isValid = validateForm();
         if (isValid) {
             showAlert('✅ Formulário válido!', 'success');
@@ -745,6 +757,109 @@ window.debug = {
         return isValid;
     }
 };
+
+// ==================== PARTÍCULAS NO HERO ====================
+function initParticles() {
+    const hero = document.querySelector('.hero-section');
+    if (!hero) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.id = 'particles-canvas';
+    canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+    hero.style.position = 'relative';
+    hero.insertBefore(canvas, hero.firstChild);
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const COUNT = 60;
+
+    function resize() {
+        canvas.width = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function Particle() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 2 + 1;
+        this.alpha = Math.random() * 0.5 + 0.1;
+    }
+
+    for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(46, 0, 249, ${p.alpha})`;
+            ctx.fill();
+        });
+
+        // Lính de conexão entre partículas próximas
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(46, 0, 249, ${0.12 * (1 - dist / 120)})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+// ==================== CONTADOR ANIMADO ====================
+function initCounters() {
+    const statItems = document.querySelectorAll('.stat-item h4');
+    if (!statItems.length) return;
+
+    function animateCount(el, target, suffix) {
+        let start = 0;
+        const duration = 1800;
+        const startTime = performance.now();
+        function step(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+            el.textContent = Math.floor(eased * target) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                const raw = el.textContent.trim();
+                const num = parseInt(raw);
+                const suffix = raw.replace(/[0-9]/g, '');
+                if (!isNaN(num)) animateCount(el, num, suffix);
+                observer.unobserve(el);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    statItems.forEach(el => observer.observe(el));
+}
 
 console.log('🚀 Portfolio Wellison Oliveira iniciado!');
 console.log('📧 Formulário configurado com StaticForms API');
