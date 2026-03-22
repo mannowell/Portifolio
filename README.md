@@ -44,4 +44,4 @@ Tem um projeto em mente ou gostaria de conhecer mais sobre o meu trabalho? Não 
 - 📧 **Email:** wellison.nascimento@hotmail.com
 - 📱 **WhatsApp:** [+351 965 563 654](https://wa.me/351965563654)
 - 💼 **LinkedIn:** [wellison-nascimento](https://www.linkedin.com/in/wellison-nascimento-79ba6b65/)
-- 📷 **Instagram:** [@wellison.nascimento](https://www.instagram.com/wellison.nascimento/)
+
