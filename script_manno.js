@@ -568,7 +568,7 @@ function initTypewriter() {
     if (!typewriterElement) return;
 
     const texts = JSON.parse(typewriterElement.getAttribute('data-text')) ||
-        ['Desenvolvedor Front End', 'Técnico em Informática', 'Freelancer'];
+        ['AI Automation Developer', 'DevOps & Infrastructure Engineer', 'Full Stack Developer'];
 
     let speed = 100;
     let eraseSpeed = 50;
